@@ -1,4 +1,4 @@
-class AppException extends Exception {
+class AppException implements Exception {
   final String? _message;
   final String? _prefix;
 

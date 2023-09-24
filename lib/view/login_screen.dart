@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mvvm/res/components/round_button.dart';
 import 'package:flutter_mvvm/utils/utils.dart';
+import 'package:flutter_mvvm/view_model/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
     final height = MediaQuery.of(context).size.height * 1;
     return Scaffold(
       appBar: AppBar(
@@ -83,6 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             RoundButton(
               title: 'Login',
+              loading: authViewModel.loading,
               onPressed: () {
                 if (emailController.text.isEmpty) {
                   Utils.flushBarErrorMessage('Email is empty', context);
@@ -91,7 +95,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   Utils.flushBarErrorMessage('Password is empty', context);
                   return;
                 } else {
-                  Utils.toastMessage('Login');
+                  Map data = {
+                    'email': emailController.text.toString(),
+                    'password': passwordController.text.toString(),
+                  };
+                  authViewModel.login(data, context);
                 }
               },
             ),

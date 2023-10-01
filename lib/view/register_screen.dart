@@ -5,14 +5,14 @@ import 'package:flutter_mvvm/utils/utils.dart';
 import 'package:flutter_mvvm/view_model/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final ValueNotifier<bool> _obscurePassword = ValueNotifier<bool>(true);
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final height = MediaQuery.of(context).size.height * 1;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Register'),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -86,8 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
               height: height * 0.05,
             ),
             RoundButton(
-              title: 'Login',
-              loading: authViewModel.loading,
+              title: 'Register',
+              loading: authViewModel.registerLoading,
               onPressed: () {
                 if (emailController.text.isEmpty) {
                   Utils.flushBarErrorMessage('Email is empty', context);
@@ -100,15 +100,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     'email': emailController.text.toString(),
                     'password': passwordController.text.toString(),
                   };
-                  authViewModel.login(data, context);
+                  authViewModel.register(data, context);
                 }
               },
             ),
             SizedBox(height: height * 0.02),
             InkWell(
-              child: const Text('Don\'t have an account? Register'),
+              child: const Text('Already have an account? Login'),
               onTap: () {
-                Navigator.pushNamed(context, RoutesName.register);
+                Navigator.pushNamed(context, RoutesName.login);
               },
             ),
           ],

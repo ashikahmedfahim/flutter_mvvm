@@ -9,8 +9,16 @@ class AuthViewModel with ChangeNotifier {
   bool _loading = false;
   bool get loading => _loading;
 
+  bool _registerLoading = false;
+  bool get registerLoading => _registerLoading;
+
   setLoading(bool value) {
     _loading = value;
+    notifyListeners();
+  }
+
+  setRegisterLoading(bool value) {
+    _registerLoading = value;
     notifyListeners();
   }
 
@@ -22,5 +30,15 @@ class AuthViewModel with ChangeNotifier {
         .catchError(
             (e) => {Utils.flushBarErrorMessage(e.toString(), buildContext)})
         .then((value) => setLoading(false));
+  }
+
+  Future<void> register(dynamic data, BuildContext buildContext) async {
+    setRegisterLoading(true);
+    _authRepository
+        .register(data)
+        .then((value) => Navigator.pushNamed(buildContext, RoutesName.home))
+        .catchError(
+            (e) => {Utils.flushBarErrorMessage(e.toString(), buildContext)})
+        .then((value) => setRegisterLoading(false));
   }
 }
